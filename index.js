@@ -32,6 +32,24 @@ async function run() {
     
     const toyCollection=client.db('toyDB').collection('toy');
 
+    app.get('/toy', async (req, res) => {
+        const { email } = req.query;
+        let query = {};
+        if (email) {
+          query = { email };
+        }
+        try {
+          const toys = await toyCollection.find(query).toArray();
+          res.json(toys);
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ error: 'Internal server error' });
+        }
+      });
+      
+
+
+
     app.post('/toy',async(req,res)=>{
         const newToy=req.body;
         console.log(newToy);
